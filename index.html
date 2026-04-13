@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logubalaji K — Software Test Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0d12;
+    --bg2: #0f1319;
+    --bg3: #161c26;
+    --amber: #e8a320;
+    --amber-dim: #b37d18;
+    --amber-glow: rgba(232,163,32,0.12);
+    --teal: #2dd4bf;
+    --teal-dim: rgba(45,212,191,0.15);
+    --text: #e8e4d9;
+    --text-muted: #7a8494;
+    --text-dim: #4a5568;
+    --border: rgba(232,163,32,0.18);
+    --mono: 'Space Mono', monospace;
+    --sans: 'Sora', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── GRID OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(232,163,32,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232,163,32,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 4rem;
+    background: rgba(10,13,18,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--amber);
+    letter-spacing: 0.1em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--amber); }
+
+  /* ── SECTIONS ── */
+  section { position: relative; z-index: 1; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 8rem 4rem 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    width: 100%;
+  }
+
+  .hero-tag {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--amber);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .hero-tag::before {
+    content: '';
+    display: inline-block;
+    width: 30px;
+    height: 1px;
+    background: var(--amber);
+  }
+
+  h1 {
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    color: #fff;
+  }
+
+  h1 span { color: var(--amber); }
+
+  .hero-desc {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    line-height: 1.8;
+    max-width: 440px;
+    margin-bottom: 2rem;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.85rem 2rem;
+    border: 1px solid var(--amber);
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+
+  .btn-primary {
+    background: var(--amber);
+    color: var(--bg);
+  }
+
+  .btn-primary:hover {
+    background: #f0b83a;
+  }
+
+  .btn-outline {
+    color: var(--amber);
+    background: transparent;
+  }
+
+  .btn-outline:hover {
+    background: var(--amber-glow);
+  }
+
+  /* HERO RIGHT — status card */
+  .hero-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    position: relative;
+  }
+
+  .hero-card::before {
+    content: 'ENGINEER PROFILE';
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--amber);
+    position: absolute;
+    top: -0.55rem;
+    left: 1.5rem;
+    background: var(--bg2);
+    padding: 0 0.5rem;
+  }
+
+  .stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .stat-row:last-child { border-bottom: none; }
+
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .stat-value {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    padding: 0.3rem 0.75rem;
+    letter-spacing: 0.08em;
+  }
+
+  .badge-active {
+    background: rgba(45,212,191,0.12);
+    color: var(--teal);
+    border: 1px solid rgba(45,212,191,0.3);
+  }
+
+  .badge-active::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--teal);
+    animation: pulse 1.5s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* ── SECTION HEADERS ── */
+  .section-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 6rem 4rem;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    max-width: 80px;
+  }
+
+  .section-title {
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 3rem;
+    letter-spacing: -0.02em;
+  }
+
+  /* ── SKILLS ── */
+  #skills { background: var(--bg2); }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .skill-block {
+    border: 1px solid var(--border);
+    padding: 1.75rem;
+    background: var(--bg3);
+    position: relative;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .skill-block:hover {
+    border-color: var(--amber-dim);
+    transform: translateY(-2px);
+  }
+
+  .skill-block-icon {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+  }
+
+  .skill-block h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 1rem;
+    letter-spacing: -0.01em;
+  }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .skill-tag {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    padding: 0.3rem 0.65rem;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    transition: all 0.2s;
+  }
+
+  .skill-tag:hover {
+    color: var(--amber);
+    border-color: var(--amber-dim);
+    background: var(--amber-glow);
+  }
+
+  /* ── EXPERIENCE ── */
+  .exp-container {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 0 3rem;
+  }
+
+  .exp-timeline {
+    position: relative;
+    padding-top: 0.4rem;
+  }
+
+  .exp-timeline::after {
+    content: '';
+    position: absolute;
+    top: 14px;
+    left: calc(100% + 1.5rem);
+    bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+
+  .exp-date {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--amber);
+    letter-spacing: 0.08em;
+    line-height: 1.4;
+  }
+
+  .exp-dot {
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--amber);
+    border-radius: 50%;
+    background: var(--bg);
+    position: absolute;
+    right: -1.5rem;
+    top: 5px;
+    transform: translateX(50%);
+    z-index: 2;
+  }
+
+  .exp-content {
+    padding-bottom: 3rem;
+  }
+
+  .exp-company {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.25rem;
+  }
+
+  .exp-role {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--amber);
+    letter-spacing: 0.1em;
+    margin-bottom: 1.5rem;
+  }
+
+  .exp-desc {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.75;
+    margin-bottom: 1.5rem;
+    max-width: 620px;
+  }
+
+  .exp-highlights {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    max-width: 620px;
+  }
+
+  .exp-item {
+    display: flex;
+    gap: 0.75rem;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    align-items: flex-start;
+  }
+
+  .exp-item::before {
+    content: '▸';
+    color: var(--amber);
+    flex-shrink: 0;
+    margin-top: 0.05em;
+    font-size: 0.8rem;
+  }
+
+  /* ── EDUCATION ── */
+  #education { background: var(--bg2); }
+
+  .edu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .edu-card {
+    border: 1px solid var(--border);
+    padding: 2rem;
+    background: var(--bg3);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .edu-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--amber);
+  }
+
+  .edu-year {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.75rem;
+  }
+
+  .edu-institution {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.4rem;
+  }
+
+  .edu-degree {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+
+  .edu-score {
+    font-family: var(--mono);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--amber);
+  }
+
+  /* ── CONTACT ── */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  .contact-intro {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    line-height: 1.8;
+  }
+
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.1rem 1.5rem;
+    border: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--text);
+    background: var(--bg2);
+    transition: all 0.2s;
+  }
+
+  .contact-link:hover {
+    border-color: var(--amber-dim);
+    background: var(--amber-glow);
+    color: var(--amber);
+  }
+
+  .contact-link-icon {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--amber);
+    width: 70px;
+    flex-shrink: 0;
+    letter-spacing: 0.1em;
+  }
+
+  .contact-link-text {
+    font-size: 0.93rem;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .footer-text {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+  }
+
+  /* ── DECORATIVE ── */
+  .amber-line {
+    width: 60px;
+    height: 2px;
+    background: var(--amber);
+    margin-bottom: 2rem;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-up {
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards;
+  }
+
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.25s; }
+  .delay-3 { animation-delay: 0.4s; }
+  .delay-4 { animation-delay: 0.55s; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { gap: 1.5rem; }
+    #hero { padding: 7rem 1.5rem 3rem; }
+    .hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .section-wrap { padding: 4rem 1.5rem; }
+    .exp-container { grid-template-columns: 1fr; }
+    .exp-timeline::after { display: none; }
+    .exp-dot { display: none; }
+    .exp-highlights { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 2rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">LK // QA ENGINEER</div>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-tag fade-up">Software Test Engineer</div>
+      <h1 class="fade-up delay-1">Logu<span>balaji</span> K</h1>
+      <p class="hero-desc fade-up delay-2">
+        Automation-focused test engineer specializing in integration testing and safety-critical avionics systems. Building reliable software through rigorous verification, precision test design, and DO-178C compliance.
+      </p>
+      <div class="hero-cta fade-up delay-3">
+        <a href="#contact" class="btn btn-primary">Get in Touch</a>
+        <a href="#experience" class="btn btn-outline">View Work</a>
+      </div>
+    </div>
+
+    <div class="hero-card fade-up delay-4">
+      <div class="stat-row">
+        <span class="stat-label">Status</span>
+        <span class="badge badge-active">Available</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Current Role</span>
+        <span class="stat-value">Test Engineer</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Company</span>
+        <span class="stat-value">Vedant Tech Solutions (DRDO-LRDE)</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Domain</span>
+        <span class="stat-value">Embedded Systems</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Experience</span>
+        <span class="stat-value">2+ Years</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Location</span>
+        <span class="stat-value">Bengaluru, India</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-wrap">
+    <div class="section-label">Capabilities</div>
+    <h2 class="section-title">Core Skills</h2>
+    <div class="skills-grid">
+
+      <div class="skill-block">
+        <div class="skill-block-icon">🧪</div>
+        <h3>Testing Methodologies</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">Manual Testing</span>
+          <span class="skill-tag">Automation Testing</span>
+          <span class="skill-tag">Unit Testing</span>
+          <span class="skill-tag">Integration Testing</span>
+          <span class="skill-tag">Hardware/Software Integration</span>
+        </div>
+      </div>
+
+      <div class="skill-block">
+        <div class="skill-block-icon">✈️</div>
+        <h3>Safety-Critical Standards</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">DO-178C</span>
+          <span class="skill-tag">Verification & Validation</span>
+          <span class="skill-tag">LDRA Tool Suite</span>
+          <span class="skill-tag">Static Code Analysis</span>
+          <span class="skill-tag">Structural Analysis</span>
+        </div>
+      </div>
+
+      <div class="skill-block">
+        <div class="skill-block-icon">⚙️</div>
+        <h3>Automation & Languages</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">Selenium</span>
+          <span class="skill-tag">PyTest</span>
+          <span class="skill-tag">Playwright</span>
+          <span class="skill-tag">C</span>
+          <span class="skill-tag">C++</span>
+        </div>
+      </div>
+
+      <div class="skill-block">
+        <div class="skill-block-icon">📋</div>
+        <h3>Process & Documentation</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">JIRA</span>
+          <span class="skill-tag">Agile</span>
+          <span class="skill-tag">SDLC/STLC</span>
+          <span class="skill-tag">Test Case Design</span>
+          <span class="skill-tag">Defect Tracking</span>
+          <span class="skill-tag">CAPA</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-wrap">
+    <div class="section-label">Work History</div>
+    <h2 class="section-title">Experience</h2>
+
+    <div class="exp-container">
+      <div class="exp-timeline">
+        <div class="exp-date">2023<br>— Present</div>
+        <div class="exp-dot"></div>
+      </div>
+      <div class="exp-content">
+        <div class="exp-company">Vedant Tech Solutions</div>
+        <div class="exp-role">TEST ENGINEER // DRDO · LRDE PROJECT</div>
+        <p class="exp-desc">
+          Performed integration testing for safety-critical airborne systems under DRDO and LRDE projects. Developed comprehensive test documentation, ensured DO-178C compliance, and collaborated with cross-functional engineering teams to maintain system reliability and quality standards.
+        </p>
+        <div class="exp-highlights">
+          <div class="exp-item">Created & maintained Software Test Plans (STP)</div>
+          <div class="exp-item">Prepared Software Test Reports (STR)</div>
+          <div class="exp-item">Wrote Software Requirements Documents (SRD)</div>
+          <div class="exp-item">Developed Software Integration Plans (SIP)</div>
+          <div class="exp-item">Generated Software Issue Reports (SIR)</div>
+          <div class="exp-item">Root cause analysis & CAPA processes</div>
+          <div class="exp-item">Static & structural code analysis</div>
+          <div class="exp-item">Internal reviews & compliance audits</div>
+          <div class="exp-item">Defect tracking & cross-team resolution</div>
+          <div class="exp-item">Onboarding & mentoring team members</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-wrap">
+    <div class="section-label">Academic Background</div>
+    <h2 class="section-title">Education</h2>
+    <div class="edu-grid">
+
+      <div class="edu-card">
+        <div class="edu-year">2019 — 2023</div>
+        <div class="edu-institution">Excel Engineering College</div>
+        <div class="edu-degree">B.Tech – Information Technology</div>
+        <div class="edu-score">77%</div>
+      </div>
+
+      <div class="edu-card">
+        <div class="edu-year">2017 — 2019</div>
+        <div class="edu-institution">Govt. Boys HS School</div>
+        <div class="edu-degree">HSC – Computer Science</div>
+        <div class="edu-score">63.3%</div>
+      </div>
+
+      <div class="edu-card">
+        <div class="edu-year">Pre-2017</div>
+        <div class="edu-institution">Govt. Boys HS School</div>
+        <div class="edu-degree">SSLC</div>
+        <div class="edu-score">82.6%</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-wrap">
+    <div class="section-label">Let's Connect</div>
+    <h2 class="section-title">Contact</h2>
+    <div class="contact-grid">
+      <div>
+        <div class="amber-line"></div>
+        <p class="contact-intro">
+          Open to new opportunities in software quality assurance, automation engineering, and safety-critical systems testing. Whether it's a full-time role or a collaborative project — let's talk.
+        </p>
+      </div>
+      <div class="contact-links">
+        <a href="tel:9791769213" class="contact-link">
+          <span class="contact-link-icon">PHONE</span>
+          <span class="contact-link-text">+91 97917 69213</span>
+        </a>
+        <a id="email-link" class="contact-link" style="cursor:pointer;">
+          <span class="contact-link-icon">EMAIL</span>
+          <span class="contact-link-text" id="email-display"></span>
+        </a>
+        <script>
+          (function(){
+            var a='logubalaji0089',b='gmail',c='com';
+            var addr=a+'@'+b+'.'+c;
+            document.getElementById('email-link').href='mailto:'+addr;
+            document.getElementById('email-display').textContent=addr;
+          })();
+        </script>
+        <a href="https://www.linkedin.com/in/logubalaji-k" target="_blank" class="contact-link">
+          <span class="contact-link-icon">LINKEDIN</span>
+          <span class="contact-link-text">linkedin.com/in/logubalaji-k</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="foo
